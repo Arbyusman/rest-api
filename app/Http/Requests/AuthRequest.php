@@ -11,7 +11,7 @@ class AuthRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,11 +22,8 @@ class AuthRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'sometimes|required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $this->user?->id,
-            'password' => 'required|string|min:8',
-            'role_id' => 'sometimes|required|exists:roles,id',
-            'manager_id' => 'sometimes|required|exists:users,id',
+            'email' => 'required|email',
+            'password' => 'required|string|min:5',
         ];
     }
 }
