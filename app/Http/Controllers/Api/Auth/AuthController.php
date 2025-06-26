@@ -27,7 +27,7 @@ class AuthController extends Controller
                 'token' => $result['token'],
             ]);
         } catch (\Throwable $e) {
-            return $this->jsonResponse($e->getCode(), 'Internal Server Error', ['error' => $e->getMessage()]);
+            return $this->jsonResponse(500, 'Internal Server Error', ['error' => $e->getMessage()]);
         }
     }
 
@@ -38,7 +38,7 @@ class AuthController extends Controller
 
             return $this->jsonResponse(200, 'Logout successful');
         } catch (\Throwable $e) {
-            return $this->jsonResponse($e->getCode(), 'Internal Server Error', ['error' => $e->getMessage()]);
+            return $this->jsonResponse(500, 'Internal Server Error', ['error' => $e->getMessage()]);
         }
     }
 }

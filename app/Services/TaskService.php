@@ -2,12 +2,10 @@
 
 namespace app\Services;
 
+use App\Enums\Roles;
 use App\Enums\Statuses;
-use App\Models\Status;
-use App\Models\User;
 use App\Repositories\TaskRepository;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
 
 class TaskService
 {
@@ -24,9 +22,13 @@ class TaskService
     public function create(array $data): void
     {
         $data = Arr::except($data, ['status_id', 'report']);
-        $data['assignee_id'] = $data['assignee_id'] ?? $this->user->id;
         $data['creator_id'] = $this->user->id;
         $data['status_id'] = Statuses::ToDo->value;
+        $data['assignee_id'] = $data['assignee_id'] ?? $this->user->id;
+
+        if ($this->user->role_id == Roles::Staff->value && $data['assignee_id'] != $this->user->id) {
+            throw new \Exception('You cannot create tasks for others');
+        }
 
         $this->repository->create($data);
     }
@@ -51,13 +53,9 @@ class TaskService
     public function updateStatus(int $id, array $data): void
     {
         $task = $this->repository->find($id);
-        $newStatus = $data['status_id'] ?? null;
+        $status = $data['status_id'] ?? null;
 
-        if ($this->user->id !== $task->creator_id && $this->user->id !== $task->assignee_id) {
-            throw new \Exception('Only the creator or assignee can update status');
-        }
-
-        switch ($newStatus) {
+        switch ($status) {
             case Statuses::ToDo->value:
                 $this->setToDo($task);
                 break;
@@ -78,9 +76,8 @@ class TaskService
                 throw new \Exception('Invalid status');
         }
 
-        $this->repository->update($task, ['status_id' => $newStatus]);
+        $this->repository->update($task, ['status_id' => $status]);
     }
-
 
     public function updateReport(int $id, array $data): void
     {
@@ -99,18 +96,38 @@ class TaskService
 
     public function findWithRelations(int $id)
     {
-        return $this->repository->findWithRelations($id);
+        $task = $this->repository->findWithRelations($id);
+
+        return [
+            'id' => $task->id,
+            'title' => $task->title,
+            'description' => $task->description,
+            'status_id' => $task?->status_id,
+            'status' => [
+                'name' => $task?->status->name,
+            ],
+            'creator_id' => $task?->creator_id,
+            'creator' => [
+                'name' => $task?->creator->name,
+            ],
+            'assignee_id' => $task?->assignee_id,
+            'assignee' => [
+                'name' => $task?->assignee->name,
+            ],
+            'report' => $task?->report,
+        ];
     }
 
     private function setToDo($task): void
     {
-        if (!in_array($task->status_id, [Statuses::Doing->value, Statuses::Canceled->value])) {
+        if (! empty($task->report)) {
+            throw new \Exception('can only be reused if the report has not been filled');
+        }
+
+        if (! in_array($task->status_id, [Statuses::Doing->value, Statuses::Canceled->value])) {
             throw new \Exception('can only be reused if the previous status was doing or canceled');
         }
 
-        if (!empty($task->report)) {
-            throw new \Exception('can only be reused if the report has not been filled');
-        }
     }
 
     private function setDoing($task): void
@@ -129,11 +146,11 @@ class TaskService
 
     private function setCanceled($task): void
     {
-        if (!in_array($task->status_id, [Statuses::ToDo->value, Statuses::Doing->value])) {
+        if (! in_array($task->status_id, [Statuses::ToDo->value, Statuses::Doing->value])) {
             throw new \Exception('can only be used if the previous status is To Do or doing');
         }
 
-        if (!empty($task->report)) {
+        if (! empty($task->report)) {
             throw new \Exception('can only be used if the report has not been filled in');
         }
 

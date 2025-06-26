@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TaskReportRequest;
 use App\Http\Requests\TaskRequest;
+use App\Http\Requests\TaskStatusRequest;
 use App\Services\TaskService;
 use App\Traits\SiteTrait;
 
@@ -11,17 +13,17 @@ class TaskController extends Controller
 {
     use SiteTrait;
 
-    protected $taskService;
+    protected $service;
 
-    public function __construct(TaskService $taskService)
+    public function __construct(TaskService $service)
     {
-        $this->taskService = $taskService;
+        $this->service = $service;
     }
 
     public function store(TaskRequest $request)
     {
         try {
-            $this->taskService->create($request->validated());
+            $this->service->create($request->validated());
 
             return $this->jsonResponse(201, 'Task created successfully');
         } catch (\Throwable $e) {
@@ -32,7 +34,7 @@ class TaskController extends Controller
     public function show($id)
     {
         try {
-            $task = $this->taskService->findWithRelations($id);
+            $task = $this->service->findWithRelations($id);
 
             return $this->jsonResponse(200, 'Task retrieved successfully', [$task]);
         } catch (\Throwable $e) {
@@ -43,7 +45,7 @@ class TaskController extends Controller
     public function update(TaskRequest $request, $id)
     {
         try {
-            $this->taskService->update($id, $request->validated());
+            $this->service->update($id, $request->validated());
 
             return $this->jsonResponse(200, 'Task updated successfully');
         } catch (\Throwable $e) {
@@ -51,10 +53,10 @@ class TaskController extends Controller
         }
     }
 
-    public function status(TaskRequest $request, $id)
+    public function status(TaskStatusRequest $request, $id)
     {
         try {
-            $this->taskService->updateStatus($id, $request->validated());
+            $this->service->updateStatus($id, $request->validated());
 
             return $this->jsonResponse(200, 'Task status updated successfully');
         } catch (\Throwable $e) {
@@ -62,10 +64,10 @@ class TaskController extends Controller
         }
     }
 
-    public function report(TaskRequest $request, $id)
+    public function report(TaskReportRequest $request, $id)
     {
         try {
-            $this->taskService->updateReport($id, $request->validated());
+            $this->service->updateReport($id, $request->validated());
 
             return $this->jsonResponse(200, 'Task report updated successfully');
         } catch (\Throwable $e) {

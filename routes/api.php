@@ -15,7 +15,7 @@ Route::prefix('v1')->group(function () {
 
     Route::post('users', [UserController::class, 'store']);
 
-    Route::prefix('task')
+    Route::prefix('tasks')
         ->middleware('auth:sanctum')
         ->controller(TaskController::class)->group(function () {
             Route::post('', 'store');

@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Laravel\Sanctum\Http\Middleware\CheckAbilities;
 use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -40,11 +39,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (\Throwable $e) {
             return response()->json([
                 'metadata' => [
-                    'status' => $e instanceof HttpException ? $e->getCode() : 500,
+                    'status' => 500,
                     'message' => 'Internal Server Error',
                     'error' => $e->getMessage(),
                 ],
-            ], $e instanceof HttpException ? $e->getCode() : 500);
+            ], 500);
         });
     })
     ->create();

@@ -21,11 +21,11 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         try {
-            $this->service->register($request->validated());
+            $this->service->store($request->validated());
 
             return $this->jsonResponse(201, 'User created successfully');
         } catch (\Throwable $e) {
-            return $this->jsonResponse($e->getCode(), 'Internal Server Error', ['error' => $e->getMessage()]);
+            return $this->jsonResponse(500, 'Internal Server Error', ['error' => $e->getMessage()]);
         }
     }
 }
