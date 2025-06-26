@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->string('report');
-            $table->foreignId('status_id')->constrained('statuses');
-            $table->foreignId('creator_id')->constrained('users');
-            $table->foreignId('assignee_id')->constrained('users');
+            $table->string('report')->nullable();
+            $table->foreignId('status_id')->nullable()->constrained('statuses');
+            $table->foreignId('creator_id')->nullable()->constrained('users');
+            $table->foreignId('assignee_id')->nullable()->constrained('users');
             $table->softDeletes();
             $table->timestamps();
         });

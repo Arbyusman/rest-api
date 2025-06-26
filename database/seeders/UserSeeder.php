@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -19,7 +18,7 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => 'rahasia',
             'role_id' => 1,
-            'manager_id' => null
+            'manager_id' => null,
         ]);
     }
 }
