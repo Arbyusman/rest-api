@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthRequest;
 use App\Models\User;
 use App\Traits\SiteTrait;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -40,6 +39,7 @@ class AuthController extends Controller
     {
         try {
             auth('sanctum')->user()->currentAccessToken()->delete();
+
             return $this->jsonResponse(200, 'Logout successful');
         } catch (\Exception $e) {
             return $this->jsonResponse(500, 'Failed to logout', [
