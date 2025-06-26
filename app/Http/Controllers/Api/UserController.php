@@ -37,7 +37,7 @@ class UserController extends Controller
      *             @OA\Property(
      *                 property="manager_id",
      *                 type="integer",
-     *                 example=1,
+     *                 example=null,
      *                 description="Required if role is Staff (role_id == 2)"
      *             )
      *         )

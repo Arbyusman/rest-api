@@ -997,7 +997,7 @@
                                     "manager_id": {
                                         "description": "Required if role is Staff (role_id == 2)",
                                         "type": "integer",
-                                        "example": 1
+                                        "example": null
                                     }
                                 },
                                 "type": "object"
