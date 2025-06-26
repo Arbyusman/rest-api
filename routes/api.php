@@ -1,20 +1,27 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/user', function (Request $request) {
-//     return $request->user();
-// })->middleware('auth:sanctum');
+Route::prefix('v1')->group(function () {
+    Route::get('/health', fn() => response()->json(['status' => 'API is running'], 200));
 
-Route::group(['prefix' => 'v1'], function () {
-    Route::get('/health', function () {
-        return response()->json(['status' => 'API is running'], 200);
+    Route::prefix('auth')->controller(AuthController::class)->group(function () {
+        Route::post('login', 'login')->name('login');
+        Route::post('logout', 'logout')->middleware('auth:sanctum')->name('logout');
     });
-
 
     Route::post('users', [UserController::class, 'store']);
 
-    // Route::resource('/users', UserController::class)->only(['store']);
+    Route::prefix('task')
+        ->middleware('auth:sanctum')
+        ->controller(TaskController::class)->group(function () {
+            Route::post('', 'store');
+            Route::get('/{id}', 'show');
+            Route::put('/{id}', 'update');
+            Route::patch('/{id}/status', 'status');
+            Route::patch('/{id}/report', 'report');
+        });
 });
