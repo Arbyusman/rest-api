@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
-    Route::get('/health', fn() => response()->json(['status' => 'API is running'], 200));
+    Route::get('/health', fn () => response()->json(['status' => 'API is running'], 200));
 
     Route::prefix('auth')->controller(AuthController::class)->group(function () {
         Route::post('login', 'login')->name('login');

@@ -37,13 +37,14 @@ return Application::configure(basePath: dirname(__DIR__))
             ], 422);
         });
 
-        $exceptions->render(function (Throwable $e) {
+        $exceptions->render(function (\Throwable $e) {
             return response()->json([
                 'metadata' => [
-                    'status' => $e instanceof HttpException ? $e->getStatusCode() : 500,
-                    'message' => $e->getMessage() ?: 'Server Error',
+                    'status' => $e instanceof HttpException ? $e->getCode() : 500,
+                    'message' => 'Internal Server Error',
+                    'error' => $e->getMessage(),
                 ],
-            ], $e instanceof HttpException ? $e->getStatusCode() : 500);
+            ], $e instanceof HttpException ? $e->getCode() : 500);
         });
     })
     ->create();
