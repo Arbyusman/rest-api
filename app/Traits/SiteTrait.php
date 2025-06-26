@@ -24,6 +24,8 @@ trait SiteTrait
         if ($status !== Response::HTTP_OK) {
             if (is_array($data) && isset($data['error'])) {
                 Log::error('API Error', ['error' => $data['error']]);
+                $response['metadata']['error'] = $data['error'];
+                unset($response['data']);
             }
 
             return response()->json($response, $status);

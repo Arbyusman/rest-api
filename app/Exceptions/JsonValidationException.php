@@ -18,9 +18,9 @@ class JsonValidationException extends HttpResponseException
         $this->errors = $validator->errors()->toArray();
         $this->status = $status;
 
-        $response = $this->jsonResponse($this->status, 'Validation Error', 
-            $this->errors,
-        );
+        $response = $this->jsonResponse($this->status, 'Validation Error', [
+            'error' => $this->errors,
+        ]);
 
         parent::__construct($response);
     }
