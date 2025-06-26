@@ -179,7 +179,7 @@ class TaskTest extends TestCase
             'creator_id' => $this->user->id,
             'status_id' => Statuses::ToDo->value,
         ]);
-        $payload = [
+        $input = [
             'title' => 'Cuci AC ruang kelas',
             'description' => 'Cuci seluruh AC ruang kelas, dari lantai 1 sampai 10',
             'assignee_id' => $this->assignee->id,
@@ -187,7 +187,7 @@ class TaskTest extends TestCase
             'status_id' => Statuses::ToDo->value,
         ];
 
-        $response = $this->putJson("$this->url/{$task->id}", $payload);
+        $response = $this->putJson("$this->url/{$task->id}", $input);
 
         $response->assertStatus(500)
             ->assertJson([
@@ -221,7 +221,7 @@ class TaskTest extends TestCase
             'status_id' => Statuses::Doing->value,
         ]);
 
-        $payload = [
+        $input = [
             'title' => 'Cuci AC ruang kelas',
             'description' => 'Cuci seluruh AC ruang kelas, dari lantai 1 sampai 10',
             'assignee_id' => $user->id,
@@ -229,7 +229,7 @@ class TaskTest extends TestCase
             'status_id' => Statuses::ToDo->value,
         ];
 
-        $response = $this->putJson("$this->url/{$task->id}", $payload);
+        $response = $this->putJson("$this->url/{$task->id}", $input);
 
         $response->assertStatus(500)
             ->assertJson([
@@ -253,7 +253,7 @@ class TaskTest extends TestCase
             'status_id' => Statuses::Done->value,
         ]);
 
-        $payload = [
+        $input = [
             'title' => 'Cuci AC ruang kelas',
             'description' => 'Cuci seluruh AC ruang kelas, dari lantai 1 sampai 10',
             'assignee_id' => $this->assignee->id,
@@ -261,7 +261,7 @@ class TaskTest extends TestCase
             'status_id' => Statuses::ToDo->value,
         ];
 
-        $response = $this->patchJson("$this->url/{$task->id}/status", $payload);
+        $response = $this->patchJson("$this->url/{$task->id}/status", $input);
 
         $response->assertStatus(500)
             ->assertJson([
@@ -285,7 +285,7 @@ class TaskTest extends TestCase
             'report' => 'Cuci seluruh AC ruang kelas, dari lantai 1 sampai 10',
         ]);
 
-        $payload = [
+        $input = [
             'title' => 'Cuci AC ruang kelas',
             'description' => 'Cuci seluruh AC ruang kelas, dari lantai 1 sampai 10',
             'assignee_id' => $this->assignee->id,
@@ -293,7 +293,7 @@ class TaskTest extends TestCase
             'status_id' => Statuses::ToDo->value,
         ];
 
-        $response = $this->patchJson("$this->url/{$task->id}/status", $payload);
+        $response = $this->patchJson("$this->url/{$task->id}/status", $input);
 
         $response->assertStatus(500)
             ->assertJson([
@@ -316,7 +316,7 @@ class TaskTest extends TestCase
             'status_id' => Statuses::Canceled->value,
         ]);
 
-        $payload = [
+        $input = [
             'title' => 'Cuci AC ruang kelas',
             'description' => 'Cuci seluruh AC ruang kelas, dari lantai 1 sampai 10',
             'assignee_id' => $this->assignee->id,
@@ -324,7 +324,7 @@ class TaskTest extends TestCase
             'status_id' => Statuses::Doing->value,
         ];
 
-        $response = $this->patchJson("$this->url/{$task->id}/status", $payload);
+        $response = $this->patchJson("$this->url/{$task->id}/status", $input);
 
         $response->assertStatus(500)
             ->assertJson([
@@ -347,7 +347,7 @@ class TaskTest extends TestCase
             'status_id' => Statuses::Canceled->value,
         ]);
 
-        $payload = [
+        $input = [
             'title' => 'Cuci AC ruang kelas',
             'description' => 'Cuci seluruh AC ruang kelas, dari lantai 1 sampai 10',
             'assignee_id' => $this->assignee->id,
@@ -355,7 +355,7 @@ class TaskTest extends TestCase
             'status_id' => Statuses::Done->value,
         ];
 
-        $response = $this->patchJson("$this->url/{$task->id}/status", $payload);
+        $response = $this->patchJson("$this->url/{$task->id}/status", $input);
 
         $response->assertStatus(500)
             ->assertJson([
@@ -378,7 +378,7 @@ class TaskTest extends TestCase
             'status_id' => Statuses::Done->value,
         ]);
 
-        $payload = [
+        $input = [
             'title' => 'Cuci AC ruang kelas',
             'description' => 'Cuci seluruh AC ruang kelas, dari lantai 1 sampai 10',
             'assignee_id' => $this->assignee->id,
@@ -386,7 +386,7 @@ class TaskTest extends TestCase
             'status_id' => Statuses::Canceled->value,
         ];
 
-        $response = $this->patchJson("$this->url/{$task->id}/status", $payload);
+        $response = $this->patchJson("$this->url/{$task->id}/status", $input);
 
         $response->assertStatus(500)
             ->assertJson([
@@ -410,7 +410,7 @@ class TaskTest extends TestCase
             'report' => 'Cuci seluruh AC ruang kelas, dari lantai 1 sampai 10',
         ]);
 
-        $payload = [
+        $input = [
             'title' => 'Cuci AC ruang kelas',
             'description' => 'Cuci seluruh AC ruang kelas, dari lantai 1 sampai 10',
             'assignee_id' => $this->assignee->id,
@@ -418,7 +418,7 @@ class TaskTest extends TestCase
             'status_id' => Statuses::Canceled->value,
         ];
 
-        $response = $this->patchJson("$this->url/{$task->id}/status", $payload);
+        $response = $this->patchJson("$this->url/{$task->id}/status", $input);
 
         $response->assertStatus(500)
             ->assertJson([
@@ -442,7 +442,7 @@ class TaskTest extends TestCase
             'status_id' => Statuses::Doing->value,
         ]);
 
-        $payload = [
+        $input = [
             'title' => 'Cuci AC ruang kelas',
             'description' => 'Cuci seluruh AC ruang kelas, dari lantai 1 sampai 10',
             'assignee_id' => $this->assignee->id,
@@ -450,7 +450,7 @@ class TaskTest extends TestCase
             'status_id' => Statuses::Canceled->value,
         ];
 
-        $response = $this->patchJson("$this->url/{$task->id}/status", $payload);
+        $response = $this->patchJson("$this->url/{$task->id}/status", $input);
 
         $response->assertStatus(500)
             ->assertJson([
@@ -473,7 +473,7 @@ class TaskTest extends TestCase
             'status_id' => Statuses::Doing->value,
         ]);
 
-        $payload = [
+        $input = [
             'title' => 'Cuci AC ruang kelas',
             'description' => 'Cuci seluruh AC ruang kelas, dari lantai 1 sampai 10',
             'assignee_id' => $this->assignee->id,
@@ -482,7 +482,7 @@ class TaskTest extends TestCase
             'report' => 'Cuci seluruh AC ruang kelas, dari lantai 1 sampai 10',
         ];
 
-        $response = $this->patchJson("$this->url/{$task->id}/report", $payload);
+        $response = $this->patchJson("$this->url/{$task->id}/report", $input);
 
         $response->assertStatus(500)
             ->assertJson([
@@ -505,7 +505,7 @@ class TaskTest extends TestCase
             'status_id' => Statuses::Doing->value,
         ]);
 
-        $payload = [
+        $input = [
             'title' => 'Cuci AC ruang kelas',
             'description' => 'Cuci seluruh AC ruang kelas, dari lantai 1 sampai 10',
             'assignee_id' => $this->assignee->id,
@@ -514,7 +514,7 @@ class TaskTest extends TestCase
             'report' => 'Cuci seluruh AC ruang kelas, dari lantai 1 sampai 10',
         ];
 
-        $response = $this->patchJson("$this->url/{$task->id}/report", $payload);
+        $response = $this->patchJson("$this->url/{$task->id}/report", $input);
 
         $response->assertStatus(500)
             ->assertJson([
