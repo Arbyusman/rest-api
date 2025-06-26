@@ -4,7 +4,6 @@ namespace App\Traits;
 
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
-use App\Exceptions\JsonException;
 
 trait SiteTrait
 {
@@ -17,11 +16,11 @@ trait SiteTrait
             ],
         ];
 
-        if (is_array($data) && !isset($data['error'])) {
+        if (is_array($data) && ! isset($data['error'])) {
             $response['data'] = $data;
         }
 
-        if ($status !== Response::HTTP_OK) {
+        if ($status < 200 || $status >= 300) {
             if (is_array($data) && isset($data['error'])) {
                 Log::error('API Error', ['error' => $data['error']]);
                 $response['metadata']['error'] = $data['error'];
