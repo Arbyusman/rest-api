@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\StatusController;
 use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
@@ -14,6 +16,9 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::post('users', [UserController::class, 'store']);
+
+    Route::get('statuses', [StatusController::class, 'index']);
+    Route::get('roles', [RoleController::class, 'index']);
 
     Route::prefix('tasks')
         ->middleware('auth:sanctum')

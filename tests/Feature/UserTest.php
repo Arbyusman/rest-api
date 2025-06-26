@@ -123,7 +123,7 @@ class UserTest extends TestCase
                     'status' => 422,
                     'message' => 'Validation Error',
                     'error' => [
-                        'manager_id' => ['The manager_id field is required.'],
+                        'manager_id' => ['The manager_id field is required for staff'],
                     ],
                 ],
             ]);

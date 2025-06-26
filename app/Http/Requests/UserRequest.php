@@ -30,7 +30,15 @@ class UserRequest extends FormRequest
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
             'role_id' => 'required|numeric|exists:roles,id',
-            'manager_id' => 'sometimes|numeric|exists:users,id',
+            'manager_id' => ['nullable', function ($attribute, $value, $fail) {
+                if (! is_bool($value) && ! is_numeric($value)) {
+                    $fail('The '.$attribute.' must be a boolean or a numeric value.');
+                }
+
+                if (is_numeric($value) && ! User::where('id', $value)->exists()) {
+                    $fail('The selected '.$attribute.' is invalid.');
+                }
+            }],
         ];
     }
 
@@ -40,10 +48,8 @@ class UserRequest extends FormRequest
             $roleId = $this->input('role_id');
             $managerId = $this->input('manager_id');
 
-            if ($roleId == Roles::Staff->value) {
-                if (empty($managerId) || $managerId == null) {
-                    $validator->errors()->add('manager_id', 'The manager_id field is required.');
-                }
+            if ($roleId == Roles::Staff->value && (is_null($managerId) || $managerId === false)) {
+                $validator->errors()->add('manager_id', 'The manager_id field is required for staff');
             }
         });
     }
